@@ -4,16 +4,16 @@ import time
 import requests
  
 #GPIO Mode (BOARD / BCM)
-GPIO.setmode(GPIO.BCM)
+GPIO.setmode(GPIO.BOARD)
  
 #set GPIO Pins
-GPIO_TRIGGER = 18
-GPIO_ECHO = 24
+GPIO_TRIGGER = 12
+GPIO_ECHO = 18
 
-DEFAULT_DISTANCE = 200
-DEFAULT_TOLERANCE_RANGE = 50
+DEFAULT_DISTANCE = 20
+DEFAULT_TOLERANCE_RANGE = 5
 
-DETECT_TOLERANCE_RANGE = 30
+DETECT_TOLERANCE_RANGE = 5
  
 #set GPIO direction (IN / OUT)
 GPIO.setup(GPIO_TRIGGER, GPIO.OUT)
@@ -50,9 +50,9 @@ try:
         # and divide by 2, because there and back
         distance = (TimeElapsed * 34300) / 2
 
-        print ("Measured Distance = %.1f cm" % dist)
+        print ("Measured Distance:" + str(distance))
 
-        if (oldDistance != None && ((DEFAULT_DISTANCE - distance) > DEFAULT_TOLERANCE_RANGE) && (abs(distance - oldDistance) > DETECT_TOLERANCE_RANGE)):
+        if (oldDistance != None and ((DEFAULT_DISTANCE - distance) > DEFAULT_TOLERANCE_RANGE) and (abs(distance - oldDistance) > DETECT_TOLERANCE_RANGE)):
             print ("Someone passed")
             r = requests.post("http://ec2-52-14-74-16.us-east-2.compute.amazonaws.com:3000/ws/sensors", json={"type": "passage", "info": "medicine"})
             print(r.status_code, r.reason)

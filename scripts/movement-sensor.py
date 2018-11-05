@@ -52,7 +52,7 @@ ADXL345_REG_THRESH_INACT  = 0x25
 ADXL345_REG_TIME_INACT    = 0x26
 
 ADXL345_REG_THRESH_FF     = 0x28
-ADXL345_REG_TIME_FF       = 0x28
+ADXL345_REG_TIME_FF       = 0x29
 
 ADXL345_DATARATE_0_10_HZ  = 0x00
 ADXL345_DATARATE_0_20_HZ  = 0x01
@@ -123,11 +123,11 @@ class ADXL345(object):
     else:
         raise RuntimeError('Failed to find the expected device ID register value, check your wiring.')
 
-    clearSettings(self)
+    self.clearSettings()
 
   def clearSettings(self):
-    set_range(ADXL345_DATARATE_100_HZ)
-    set_data_range(ADXL345_RANGE_2_G)
+    self.set_range(ADXL345_RANGE_2_G)
+    self.set_data_rate(ADXL345_DATARATE_100_HZ)
 
     self._device.write8(ADXL345_REG_THRESH_TAP, 0x00);
     self._device.write8(ADXL345_REG_DUR, 0x00);
